@@ -14,10 +14,17 @@ public class PlayerController : MonoBehaviour
 
     #region Private Fields
     private int jumpCount;
+    private AnimatorController animatorController;
 
     #endregion
 
     #region Built In Method
+
+    private void Start()
+    {
+        animatorController = GetComponent<AnimatorController>();
+    }
+
     // Update is called once per frame
     private void Update()
     {
@@ -44,7 +51,9 @@ public class PlayerController : MonoBehaviour
             Vector2 jumpDirection = new Vector2(0, 1);
             rb.velocity = jumpDirection * jumpSpeed;
             jumpCount++;
+            animatorController.Jump();
         }
+        
     }
 
     private void Move()
@@ -52,6 +61,23 @@ public class PlayerController : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         Vector2 direction = new Vector2(horizontal, 0);
         transform.Translate(direction * moveSpeed * Time.deltaTime);
+        if(horizontal == 0)
+        {
+            animatorController.Idle();
+        }
+        else
+        {
+            if(horizontal < 0)
+            {
+                animatorController.FlipHorizontal(true);
+            }
+            else
+            {
+                animatorController.FlipHorizontal(false);
+            }
+            animatorController.Run();
+        }
+        
     }
     #endregion
 }
