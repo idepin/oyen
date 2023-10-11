@@ -15,19 +15,28 @@ public class PlayerController : MonoBehaviour
     #region Private Fields
     private int jumpCount;
     private AnimatorController animatorController;
+    private bool allowMove;
 
     #endregion
+
+
+    public bool AllowMove { set { allowMove = value; } get { return allowMove; } }
 
     #region Built In Method
 
     private void Start()
     {
         animatorController = GetComponent<AnimatorController>();
+        allowMove = true;
+
     }
 
     // Update is called once per frame
     private void Update()
     {
+        if (!allowMove)
+            return;
+
         Move();
         Jump();
     }
